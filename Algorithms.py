@@ -1,22 +1,22 @@
 import sys
 
-students = []
+students_TLS = []
 
-def bubble_sort(students, key):
-    n = len(students)
+def bubble_sort(students_TLS, key):
+    n = len(students_TLS)
     for i in range(n - 1):
         for j in range(n - i - 1):
-            if students[j][key] > students[j + 1][key]:
-                students[j], students[j + 1] = students[j + 1], students[j]
+            if students_TLS[j][key] > students_TLS[j + 1][key]:
+                students_TLS[j], students_TLS[j + 1] = students_TLS[j + 1], students_TLS[j]
 
 
-def binary_search(students, student_id):
-    low, high = 0, len(students) - 1
+def binary_search(students_TLS, student_id):
+    low, high = 0, len(students_TLS) - 1
     while low <= high:
         mid = (low + high) // 2
-        if students[mid]['id'] == student_id:
+        if students_TLS[mid]['id'] == student_id:
             return mid
-        elif students[mid]['id'] < student_id:
+        elif students_TLS[mid]['id'] < student_id:
             low = mid + 1
         else:
             high = mid - 1
@@ -28,11 +28,11 @@ def add_student():
     name = input("Enter Student Name: ")
     grade = input("Enter Grade: ")
 
-    if any(s['id'] == sid for s in students):
+    if any(s['id'] == sid for s in students_TLS):
         print("❌ Student ID already exists!")
         return
 
-    students.append({'id': sid, 'name': name, 'grade': grade})
+    students_TLS.append({'id': sid, 'name': name, 'grade': grade})
     print("✅ Student added successfully!")
 
     print("\n📋 Updated Student List (Sorted by Name):")
@@ -41,14 +41,14 @@ def add_student():
 
 def edit_student():
     sid = input("Enter ID of student to edit: ")
-    sorted_list = sorted(students, key=lambda x: x['id'])
+    sorted_list = sorted(students_TLS, key=lambda x: x['id'])
     index = binary_search(sorted_list, sid)
 
     if index == -1:
         print("❌ Student not found!")
         return
 
-    for s in students:
+    for s in students_TLS:
         if s['id'] == sid:
             print(f"Editing Student: {s}")
             s['name'] = input("Enter new name (leave blank to keep current): ") or s['name']
@@ -62,7 +62,7 @@ def edit_student():
 
 def delete_student():
     sid = input("Enter ID of student to delete: ")
-    for s in students:
+    for s in students_TLS:
         if s['id'] == sid:
             print(f"Found Student: {s}")
             choice = input("Would you like to edit this student before deleting? (y/n): ").lower()
@@ -70,10 +70,10 @@ def delete_student():
                 edit_student()
             confirm = input("Are you sure you want to delete this student? (y/n): ").lower()
             if confirm == 'y':
-                students.remove(s)
+                students_TLS.remove(s)
                 print("🗑️ Student deleted successfully!")
 
-                if students:
+                if students_TLS:
                     print("\n📋 Updated Student List (Sorted by Name):")
                     display_students(auto=True)
                 else:
@@ -83,7 +83,7 @@ def delete_student():
 
 
 def display_students(auto=False):
-    if not students:
+    if not students_TLS:
         if not auto:
             print("⚠️ No students to display!")
         return
@@ -95,7 +95,7 @@ def display_students(auto=False):
     else:
         key = 'name'
 
-    sorted_students = students.copy()
+    sorted_students = students_TLS.copy()
     bubble_sort(sorted_students, key)
 
     print("\n--- Student List (Sorted by", key.capitalize(), ") ---")
@@ -107,13 +107,13 @@ def display_students(auto=False):
 
 
 def search_student():
-    if not students:
+    if not students_TLS:
         print("⚠️ No students in list!")
         return
 
     sid = input("Enter Student ID to search: ")
 
-    sorted_students = sorted(students, key=lambda x: x['id'])
+    sorted_students = sorted(students_TLS, key=lambda x: x['id'])
     index = binary_search(sorted_students, sid)
 
     if index != -1:
