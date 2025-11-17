@@ -29,13 +29,13 @@ def add_student():
     grade = input("Enter Grade: ")
 
     if any(s['id'] == sid for s in students_TLS):
-        print("❌ Student ID already exists!")
+        print(" Student ID already exists!")
         return
 
     students_TLS.append({'id': sid, 'name': name, 'grade': grade})
-    print("✅ Student added successfully!")
+    print(" Student added successfully!")
 
-    print("\n📋 Updated Student List (Sorted by Name):")
+    print("\n Updated Student List (Sorted by Name):")
     display_students(auto=True)
 
 
@@ -45,7 +45,7 @@ def edit_student():
     index = binary_search(sorted_list, sid)
 
     if index == -1:
-        print("❌ Student not found!")
+        print(" Student not found!")
         return
 
     for s in students_TLS:
@@ -53,9 +53,9 @@ def edit_student():
             print(f"Editing Student: {s}")
             s['name'] = input("Enter new name (leave blank to keep current): ") or s['name']
             s['grade'] = input("Enter new grade (leave blank to keep current): ") or s['grade']
-            print("✅ Student updated successfully!")
+            print(" Student updated successfully!")
 
-            print("\n📋 Updated Student List (Sorted by Name):")
+            print("\n Updated Student List (Sorted by Name):")
             display_students(auto=True)
             return
 
@@ -71,21 +71,21 @@ def delete_student():
             confirm = input("Are you sure you want to delete this student? (y/n): ").lower()
             if confirm == 'y':
                 students_TLS.remove(s)
-                print("🗑️ Student deleted successfully!")
+                print(" Student deleted successfully!")
 
                 if students_TLS:
-                    print("\n📋 Updated Student List (Sorted by Name):")
+                    print("\n Updated Student List (Sorted by Name):")
                     display_students(auto=True)
                 else:
-                    print("⚠️ No students left in the list.")
+                    print(" No students left in the list.")
             return
-    print("❌ Student not found!")
+    print(" Student not found!")
 
 
 def display_students(auto=False):
     if not students_TLS:
         if not auto:
-            print("⚠️ No students to display!")
+            print(" No students to display!")
         return
 
     if not auto:
@@ -108,7 +108,7 @@ def display_students(auto=False):
 
 def search_student():
     if not students_TLS:
-        print("⚠️ No students in list!")
+        print(" No students in list!")
         return
 
     sid = input("Enter Student ID to search: ")
@@ -117,9 +117,9 @@ def search_student():
     index = binary_search(sorted_students, sid)
 
     if index != -1:
-        print("✅ Student found:", sorted_students[index])
+        print(" Student found:", sorted_students[index])
     else:
-        print("❌ Student not found!")
+        print(" Student not found!")
 
 
 def menu():
@@ -145,11 +145,12 @@ def menu():
         elif choice == '5':
             search_student()
         elif choice == '6':
-            print("👋 Exiting program...")
+            print(" Exiting program...")
             sys.exit()
         else:
-            print("❌ Invalid choice, try again.")
+            print(" Invalid choice, try again.")
 
 
 if __name__ == "__main__":
     menu()
+
