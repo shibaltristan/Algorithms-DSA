@@ -6,9 +6,16 @@ def bubble_sort(students_TLS, key):
     n = len(students_TLS)
     for i in range(n - 1):
         for j in range(n - i - 1):
-            if students_TLS[j][key] > students_TLS[j + 1][key]:
-                students_TLS[j], students_TLS[j + 1] = students_TLS[j + 1], students_TLS[j]
+            a = students_TLS[j][key]
+            b = students_TLS[j + 1][key]
 
+            # Convert grade to int for numerical sorting
+            if key == 'grade':
+                a = int(a)
+                b = int(b)
+
+            if a > b:
+                students_TLS[j], students_TLS[j + 1] = students_TLS[j + 1], students_TLS[j]
 
 def binary_search(students_TLS, student_id):
     low, high = 0, len(students_TLS) - 1
@@ -22,7 +29,6 @@ def binary_search(students_TLS, student_id):
             high = mid - 1
     return -1
 
-
 def add_student():
     sid = input("Enter Student ID: ")
     name = input("Enter Student Name: ")
@@ -32,12 +38,12 @@ def add_student():
         print(" Student ID already exists!")
         return
 
-    students_TLS.append({'id': sid, 'name': name, 'grade': grade})
+    # Store grade as integer
+    students_TLS.append({'id': sid, 'name': name, 'grade': int(grade)})
     print(" Student added successfully!")
 
-    print("\n Updated Student List (Sorted by Name):")
-    display_students(auto=True)
-
+    print("\n Updated Student List (Sorted by Grade):")
+    display_students(auto=True, sort_key='grade')
 
 def edit_student():
     sid = input("Enter ID of student to edit: ")
@@ -51,14 +57,19 @@ def edit_student():
     for s in students_TLS:
         if s['id'] == sid:
             print(f"Editing Student: {s}")
-            s['name'] = input("Enter new name (leave blank to keep current): ") or s['name']
-            s['grade'] = input("Enter new grade (leave blank to keep current): ") or s['grade']
+            new_name = input("Enter new name (leave blank to keep current): ")
+            new_grade = input("Enter new grade (leave blank to keep current): ")
+
+            if new_name:
+                s['name'] = new_name
+            if new_grade:
+                s['grade'] = int(new_grade)
+
             print(" Student updated successfully!")
 
-            print("\n Updated Student List (Sorted by Name):")
-            display_students(auto=True)
+            print("\n Updated Student List (Sorted by Grade):")
+            display_students(auto=True, sort_key='grade')
             return
-
 
 def delete_student():
     sid = input("Enter ID of student to delete: ")
@@ -74,15 +85,14 @@ def delete_student():
                 print(" Student deleted successfully!")
 
                 if students_TLS:
-                    print("\n Updated Student List (Sorted by Name):")
-                    display_students(auto=True)
+                    print("\n Updated Student List (Sorted by Grade):")
+                    display_students(auto=True, sort_key='grade')
                 else:
                     print(" No students left in the list.")
             return
     print(" Student not found!")
 
-
-def display_students(auto=False):
+def display_students(auto=False, sort_key='name'):
     if not students_TLS:
         if not auto:
             print(" No students to display!")
@@ -91,20 +101,17 @@ def display_students(auto=False):
     if not auto:
         print("\nSort by: 1) Name  2) Grade")
         choice = input("Enter choice: ")
-        key = 'name' if choice == '1' else 'grade'
-    else:
-        key = 'name'
+        sort_key = 'name' if choice == '1' else 'grade'
 
     sorted_students = students_TLS.copy()
-    bubble_sort(sorted_students, key)
+    bubble_sort(sorted_students, sort_key)
 
-    print("\n--- Student List (Sorted by", key.capitalize(), ") ---")
+    print(f"\n--- Student List (Sorted by {sort_key.capitalize()}) ---")
     print("{:<10} {:<20} {:<10}".format("ID", "Name", "Grade"))
     print("-" * 40)
     for s in sorted_students:
         print("{:<10} {:<20} {:<10}".format(s['id'], s['name'], s['grade']))
     print()
-
 
 def search_student():
     if not students_TLS:
@@ -120,7 +127,6 @@ def search_student():
         print(" Student found:", sorted_students[index])
     else:
         print(" Student not found!")
-
 
 def menu():
     while True:
@@ -150,7 +156,5 @@ def menu():
         else:
             print(" Invalid choice, try again.")
 
-
 if __name__ == "__main__":
     menu()
-
